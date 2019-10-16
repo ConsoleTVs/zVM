@@ -36,7 +36,7 @@ pub fn main() anyerror!void {
     var memory = comptime ([_]i64{ 0 } ** memory_size);
     // Program code to execute.
     var code = [_]Opcode{
-        Opcode{ .kind = .Loadi, .op1 = 0, .op2 = 20 }, // r0 = 20;
+        Opcode{ .kind = .Loadi, .op1 = 0, .op2 = 20000 }, // r0 = 20000;
         Opcode{ .kind = .Loadi, .op1 = 1, .op2 = 0 }, // r1 = 0;
         Opcode{ .kind = .Compare, .op1 = 2, .op2 = 0, .op3 = 1 }, // r2 = r0 == r1;
         Opcode{ .kind = .Branch, .op1 = 2, .op2 = 2 }, // if (r2 == 0) goto +2;
@@ -49,7 +49,7 @@ pub fn main() anyerror!void {
     // The VM itself.
     while (true) {
         const op = code[pc];
-        std.debug.warn("({}) Kind = {}\n\tr0={}\tr1={}\tr2={}\n", pc, op.kind, memory[0], memory[1], memory[2]);
+        // std.debug.warn("({}) Kind = {}\n\tr0={}\tr1={}\tr2={}\n", pc, op.kind, memory[0], memory[1], memory[2]);
         switch (op.kind) {
             .Loadi => memory[@intCast(usize, op.op1)] = op.op2,
             .Addi => memory[@intCast(usize, op.op1)] = memory[@intCast(usize, op.op2)] + op.op3,
@@ -61,5 +61,4 @@ pub fn main() anyerror!void {
         }
         pc += 1;
     }
-    std.debug.warn("Finished!");
 }
